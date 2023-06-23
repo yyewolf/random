@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <title>Rock solid</title>
+    <style>
+        .bush-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+            overflow: hidden;
+        }
+
+        .malph-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+            overflow: hidden;
+            display: none;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 3rem;
+            font-family: 'Rock Salt', cursive;
+            color: #fff;
+            text-shadow: 0 0 10px #000;
+        }
+
+        .bush {
+            height: 50vh;
+        }
+
+        .bush-container:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="bush-container">
+        <h2 class="title">Hide in the bush !</h2>
+        <img class="bush" src="bush.png" />
+    </div>
+
+    <div class="malph-container">
+        <img class="malph" src="malphite.png" />
+        <audio src="ult.mp3"></audio>
+    </div>
+
+    <script>
+        let bushCtn = document.querySelector('.bush-container');
+        let malphCtn = document.querySelector('.malph-container');
+        // When the user clicks on container, the bush comes closer and closer with a js animation
+        bushCtn.addEventListener('click', bringBushCloser);
+
+        function bringBushCloser() {
+            bushCtn.style.transition = 'all 2s ease-in-out';
+            bushCtn.style.transform = 'translate(-50%, -50%) scale(3)';
+
+            // After 1.5 seconds, make a transform on transparence to hide the bush
+            setTimeout(makeBushDisappear, 1500);
+        }
+
+        function makeBushDisappear() {
+            bushCtn.style.transition = 'all 0.5s ease-in-out';
+            bushCtn.style.opacity = '0';
+
+            // After 0.5 seconds, make the malphite appear
+            setTimeout(makeMalphiteAppear, 500);
+        }
+
+        function makeMalphiteAppear() {
+            malphCtn.style.display = 'flex';
+            malphCtn.style.transition = 'all 0.65s linear';
+            malphCtn.style.opacity = '1';
+
+            // After 1 second, make the malphite ult
+            setTimeout(makeMalphiteUlt, 10);
+        }
+
+        function makeMalphiteUlt() {
+            malphCtn.querySelector('audio').play();
+            malphCtn.style.transform = 'translate(-50%, -50%) scale(20)';
+
+            setTimeout(screenHardShake(true), 650);
+            setTimeout(wikipedia, 1400);
+        }
+
+        function wikipedia() {
+            window.location.href = 'https://en.wikipedia.org/wiki/Rock_(geology)';
+        }
+
+        function screenHardShake(b) {
+            return () => {
+                malphCtn.style.transition = 'all 0.05s';
+                if (b) malphCtn.style.transform = 'translate(-49%, -49%) rotate(10deg) scale(20)';
+                else malphCtn.style.transform = 'translate(-51%, -51%) rotate(-10deg) scale(20)';
+                setTimeout(screenHardShake(!b), 100);
+            }
+        }
+    </script>
+</body>
+
+</html>
